@@ -9,3 +9,7 @@ zaima是一个无聊的练手，用来在命令行中查看[摸鱼王Quin](https
 喜欢的话可以去掉后缀py，直接输入``$ zaima``执行。
 
 初学py的小白，代码写的糟糕，见谅。
+
+---
+
+**Warning：**python需要安装requests模块
