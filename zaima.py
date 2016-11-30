@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import optparse
-import json, requests, time, random
+import optparse, json, requests, time, random, yaml
 url = 'http://open.douyucdn.cn/api/RoomApi/room/'
 roomNum = '3614'
 
@@ -41,29 +40,30 @@ quinName = [
 
 r = requests.get(url+roomNum)
 r = r.json()
-roomError = r.get(u'error')
+r = json.dumps(r)
+r = yaml.safe_load(r)
+
+roomError = r.get('error')
 ntime = time.strftime('%Y%m%d',time.localtime(time.time()))
+ntimeS = time.strftime('%H',time.localtime(time.time()))
 
 if roomError == 0:
-    roomData = r.get(u'data')
-    
-    print random.choice(quinName),
-    print "说：",
-    print roomData.get(u'room_name')
+    roomData = r.get('data')
+    quinName = random.choice(quinName)
+
+    print "%s说：%s" % (quinName, roomData.get('room_name').encode('utf-8'))
     print
-    if roomData.get(u'room_status') == '2':
-        nonB = int(ntime)-int(roomData.get(u'start_time').encode('utf-8')[0:10].replace('-', ''))
-        print random.choice(quinName),
-        print "已经摸了",
-        print nonB,
-        print " 天了。"
-        print random.choice(quinLanguage)
-    elif roomData.get(u'room_status') == '1':
-        print "惊了！",
-        print random.choice(quinName),
-        print "居然播了，不敢信。"
-        print "而且有",
-        print roomData.get(u'online'),
-        print "个猛男在看直播，整个房间都gay gay的。"
+    if roomData.get('room_status') == '2':
+        nonB = int(ntime)-int(roomData.get('start_time').encode('utf-8')[0:10].replace('-', ''))
+        nonBS = 24-int(roomData.get('start_time').encode('utf-8')[11:13])+int(ntimeS)
+        if nonB == 1 and nonBS <= 24:
+            print "让秦先生歇一歇吧，不要猝死在直播间。"
+        else:
+            print quinName, "已经摸了", nonB, " 天了。"
+            print random.choice(quinLanguage)
+    elif roomData.get('room_status') == '1':
+        print "惊了！"
+        print quinName, "居然播了，不敢信。"
+        print "而且有", roomData.get('online'), "个猛男在看直播，整个房间都gay gay的。"
 else:
     print("好神秘啊，怕不是进错房间了？")
