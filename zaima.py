@@ -1,9 +1,16 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import optparse, json, requests, time, random, yaml
+
+# douyu API adderss
 url = 'http://open.douyucdn.cn/api/RoomApi/room/'
 roomNum = '3614'
 
+# check month and year
+monthDays = (31,28,31,30,31,30,31,31,30,31,30,31)
+monthDayss = (31,29,31,30,31,30,31,31,30,31,30,31)
+
+# Quin luanguage
 quinLanguage = [
 "摸了。",
 "秦先森已经歇了。",
@@ -24,6 +31,7 @@ quinLanguage = [
 "说不出话。"
 ]
 
+# Quin name
 quinName = [
 "秦川",
 "秦先森",
@@ -38,27 +46,55 @@ quinName = [
 "Q酱"
 ]
 
-r = requests.get(url+roomNum)
+# get API return
+try:
+    r = requests.get(url+roomNum)
+except requests.exceptions.RequestException, e:
+    print "网络出错了！怕不是没联网？"
+    exit()
+
+# deal with the return data 
 r = r.json()
 r = json.dumps(r)
 r = yaml.safe_load(r)
 
 roomError = r.get('error')
+
+# now time
 ntime = time.strftime('%Y%m%d',time.localtime(time.time()))
 ntimeS = time.strftime('%H',time.localtime(time.time()))
 
+# roomError == 0 then catch the right data
 if roomError == 0:
+    # catch the room data in return JSON data
     roomData = r.get('data')
     quinName = random.choice(quinName)
+    nonBS = 0
+    
+    # get the last play time
+    btime = roomData.get('start_time').encode('utf-8')[0:10].replace('-', '')
 
+    # print room title
     print "%s说：%s" % (quinName, roomData.get('room_name').encode('utf-8'))
     print
+    
+    # not in play
     if roomData.get('room_status') == '2':
-        nonB = int(ntime)-int(roomData.get('start_time').encode('utf-8')[0:10].replace('-', ''))
-        nonBS = 24-int(roomData.get('start_time').encode('utf-8')[11:13])+int(ntimeS)
-        if nonB == 1 and nonBS <= 24:
-            print "让秦先生歇一歇吧，不要猝死在直播间。"
+        # fix the bug when between two month
+        if ntime[0:4] == btime[0:4] and ntime[4:6] == btime[4:6]:
+            nonB = int(ntime)-int(btime)
         else:
+            if ntime[0:4]%4 == 0:
+                nonB = monthDayss[int(btime[4:6])]-int(btime[4:6]) + int(ntime[4:6])
+            else:
+                nonB = monthDays[int(btime[4:6])]-int(btime[4:6]) + int(ntime[4:6])
+            nonBS = 24-int(roomData.get('start_time').encode('utf-8')[11:13])+int(ntimeS)
+            
+        if nonB <= 1 and nonBS <= 24:
+            print "刚刚勃完，让%s歇一歇吧，不要猝死在直播间。" % quinName
+        else:
+            print roomData.get('start_time')
+            print nonBS
             print quinName, "已经摸了", nonB, " 天了。"
             print random.choice(quinLanguage)
     elif roomData.get('room_status') == '1':
