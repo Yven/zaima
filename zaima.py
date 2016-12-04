@@ -93,8 +93,8 @@ if roomError == 0:
         if nonB <= 1 and nonBS <= 24:
             print "刚刚勃完，让%s歇一歇吧，不要猝死在直播间。" % quinName
         else:
-            print roomData.get('start_time')
-            print nonBS
+            # print roomData.get('start_time')
+            # print nonBS
             print quinName, "已经摸了", nonB, " 天了。"
             print random.choice(quinLanguage)
     elif roomData.get('room_status') == '1':
