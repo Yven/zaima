@@ -14,5 +14,5 @@ zaima是一个无聊的练手，用来在命令行中查看[摸鱼王Quin](https
 
 ## Request
 
-1. need [requests](https://github.com/kennethreitz/requests) module
-2. need [PyYAML](http://pyyaml.org/wiki/PyYAML) module
+1. [requests](https://github.com/kennethreitz/requests)
+2. [PyYAML](http://pyyaml.org/wiki/PyYAML)
