@@ -84,10 +84,10 @@ if roomError == 0:
         if ntime[0:4] == btime[0:4] and ntime[4:6] == btime[4:6]:
             nonB = int(ntime)-int(btime)
         else:
-            if ntime[0:4]%4 == 0:
-                nonB = monthDayss[int(btime[4:6])]-int(btime[4:6]) + int(ntime[4:6])
+            if int(ntime[0:4])%4 == 0:
+                nonB = int(btime[6:8])-monthDayss[int(btime[4:6])-1] + int(ntime[6:8])
             else:
-                nonB = monthDays[int(btime[4:6])]-int(btime[4:6]) + int(ntime[4:6])
+                nonB = int(btime[6:8])-monthDays[int(btime[4:6])-1] + int(ntime[6:8])
             nonBS = 24-int(roomData.get('start_time').encode('utf-8')[11:13])+int(ntimeS)
             
         if nonB <= 1 and nonBS <= 24:
