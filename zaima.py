@@ -43,11 +43,12 @@ quinName = [
 "缺",
 "缺哥哥",
 "缺神",
-"Q酱"
+"Q酱",
+"二五仔"
 ]
 
 # get API return
-# deal with the return data 
+# deal with the return data
 try:
     r = requests.get(url+roomNum)
     r = r.json()
@@ -69,14 +70,14 @@ if roomError == 0:
     roomData = r.get('data')
     quinName = random.choice(quinName)
     nonBS = 0
-    
+
     # get the last play time
     btime = roomData.get('start_time').encode('utf-8')[0:10].replace('-', '')
 
     # print room title
     print "%s说：%s" % (quinName, roomData.get('room_name').encode('utf-8'))
     print
-    
+
     # not in play
     if roomData.get('room_status') == '2':
         # fix the bug when between two month
@@ -88,7 +89,7 @@ if roomError == 0:
             else:
                 nonB = int(btime[6:8])-monthDays[int(btime[4:6])-1] + int(ntime[6:8])
             nonBS = 24-int(roomData.get('start_time').encode('utf-8')[11:13])+int(ntimeS)
-            
+
         if nonB <= 1 and nonBS <= 24:
             print "刚刚勃完，让%s歇一歇吧，不要猝死在直播间。" % quinName
         else:
