@@ -47,16 +47,15 @@ quinName = [
 ]
 
 # get API return
+# deal with the return data 
 try:
     r = requests.get(url+roomNum)
+    r = r.json()
+    r = json.dumps(r)
+    r = yaml.safe_load(r)
 except requests.exceptions.RequestException, e:
     print "网络出错了！怕不是没联网？"
     exit()
-
-# deal with the return data 
-r = r.json()
-r = json.dumps(r)
-r = yaml.safe_load(r)
 
 roomError = r.get('error')
 
