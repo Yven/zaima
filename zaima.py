@@ -14,9 +14,9 @@ class zaima:
     # __roomData
     # __quinName
     # __quinLanguage
-    def __init__(self, url, room):
-        self.url = url
-        self.room = room
+    def __init__(self):
+        self.url = 'http://open.douyucdn.cn/api/RoomApi/room/'
+        self.roomNum = '3614'
         try:
             self.__res = requests.get(self.url + self.roomNum).json()
             self.error = self.__res.get('error')
@@ -30,7 +30,7 @@ class zaima:
         self.__boData = {}
         self.__boData['nonB'] = datetime.datetime.now() - \
             datetime.datetime.strptime(
-                self.roomData.get('start_time'), '%Y-%m-%d %H:%M')
+                self.__roomData.get('start_time'), '%Y-%m-%d %H:%M')
         self.__boData['days'] = self.__boData['nonB'].days
         self.__boData['hours'] = self.__boData['nonB'].seconds / (3600)
         self.__boData['min'] = (self.__boData['hours'] -
@@ -41,18 +41,19 @@ class zaima:
 
     def message_output(self):
         self.__quinLanguage = random.choice(
-            open("./langs/quinLangs.dat", "r").readlines())
+            open("./langs/quinLangs.dat", "r").readlines()).strip()
         self.__quinName = random.choice(
-            open("./langs/quinName.dat", "r").readlines())
-        # quinName = random.choice(quinName)
+            open("./langs/quinName.dat", "r").readlines()).strip()
+        print("%s说：%s" % (self.__quinName, self.__roomData.get('room_name')))
+        print('')
         if self.__roomData['room_status'] == '2':
             # if 1:
             self.__bo_time()
             # print(bo)
             if not self.__boData['days']:
-                print("刚刚勃完，让%s歇一歇吧，不要猝死在直播间。" % quinName)
+                print("刚刚勃完，让%s歇一歇吧，不要猝死在直播间。" % self.__quinName)
             else:
-                print("%s已经摸了%s天%s个小时%s分钟%s秒了。" % (quinName, self.__boData[
+                print("%s已经摸了%s天%s个小时%s分钟%s秒了。" % (self.__quinName, self.__boData[
                       'days'], self.__boData['hours'], self.__boData['min'], self.__boData['sec']))
                 print(quinLanguage)
         elif self.__roomData['room_status'] == '1':
@@ -63,10 +64,8 @@ class zaima:
 
 if __name__ == '__main__':
     # douyu API adderss
-    url = 'http://open.douyucdn.cn/api/RoomApi/room/'
-    roomNum = '3614'
-    zaima = new zaima(url, room)
-    if !zaima.error:
+    zaima = zaima()
+    if not zaima.error:
         zaima.message_output()
     else:
         print("好神秘啊，怕不是进错房间了？")
