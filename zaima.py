@@ -39,13 +39,17 @@ class zaima:
                                 int(self.__boData['min'])) * 60
         # return __boData
 
-    def message_output(self):
+    def __read_langs(self):
+        self.langsFile = "./langs/quinLangs.dat"
+        self.nameFile = "./langs/quinName.dat"
         self.__quinLanguage = random.choice(
-            open("./langs/quinLangs.dat", "r").readlines()).strip()
+            open(self.langsFile, "r").readlines()).strip()
         self.__quinName = random.choice(
-            open("./langs/quinName.dat", "r").readlines()).strip()
-        print("%s说：%s" % (self.__quinName, self.__roomData.get('room_name')))
-        print('')
+            open(self.nameFile, "r").readlines()).strip()
+
+    def message_output(self):
+        self.__read_langs()
+        print("%s说：%s\n" % (self.__quinName, self.__roomData.get('room_name')))
         if self.__roomData['room_status'] == '2':
             # if 1:
             self.__bo_time()
