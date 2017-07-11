@@ -14,5 +14,3 @@ zaima是一个无聊的练手，用来在命令行中查看[摸鱼王Quin](https
 
 1. [requests](https://github.com/kennethreitz/requests)
 
-test1
-test2
