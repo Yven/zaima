@@ -70,7 +70,8 @@ class zaima:
         elif self.__roomData['room_status'] == '1':
             print("惊了！")
             print(self.__quinName, "居然播了，不敢信。")
-            print("而且有", self.__roomData.get('online'), "个猛男在看直播，整个房间都gay gay的。")
+            print("而且有", self.__roomData.get(
+                'online'), "个猛男在看直播，整个房间都gay gay的。")
 
 
 if __name__ == '__main__':
