@@ -17,3 +17,5 @@ zaima是一个无聊的练手，用来在命令行中查看[摸鱼王Quin](https
 asdasd
 
 funckyou
+
+hahaha
